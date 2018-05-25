@@ -112,6 +112,28 @@ struct image {
     }
 };
 
+struct cluster {
+    // ab contains pixel ab values: ababab...
+    std::vector<double> ab; 
+
+    cluster(std::vector<double> lab) {
+        // only need the ab values, ignore l
+        ab.resize((lab.size() / 3) * 2);
+        
+        for(unsigned i = 0; i < lab.size(); i += 3) {
+            // append a value
+            ab[(i / 3)    ] = lab[i + 1];
+            // append b value
+            ab[(i / 3) + 1] = lab[i + 2];
+        }
+    }
+
+    // groups the data in ab into n groups
+    // 
+    // TODO: return something to see results
+    void group(unsigned n) {}
+};
+
 int main(void) {
     image i("data/lenna.png");
     
@@ -131,6 +153,9 @@ int main(void) {
     std::cout << std::fixed << i.lab()[0] << " ";
     std::cout << std::fixed << i.lab()[1] << " ";
     std::cout << std::fixed << i.lab()[2] << std::endl;
+
+    // create cluster from image lab values
+    cluster c(i.lab());
 
     return 0;
 }
